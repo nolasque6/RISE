@@ -1,6 +1,7 @@
-from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi import APIRouter, File, UploadFile, HTTPException, status, Depends
 from app.services.pdf_service import extract_text_from_pdf
 from app.services.ai_service import analyze_scanned_document
+from app.services.authentication_service import get_current_user
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
 
@@ -15,9 +16,9 @@ ALLOWED_IMAGE_TYPES = {
 
 
 @router.post("/upload")
-async def upload_documents( files: list[UploadFile] = File(...)):
+async def upload_documents( files: list[UploadFile] = File(...), current_user_id: str = Depends(get_current_user)):
     if len(files) > MAX_FILES:
-        raise HTTPException( status_code=400,
+        raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST,
             detail="You can upload a maximum of 5 files.")
 
     results = []
@@ -25,14 +26,14 @@ async def upload_documents( files: list[UploadFile] = File(...)):
     for file in files:
 
         if not file.filename:
-            raise HTTPException( status_code=400,
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST,
                 detail="A file is missing a filename."
             )
 
         contents = await file.read()
 
         if len(contents) > MAX_FILE_SIZE:
-            raise HTTPException( status_code=400,
+            raise HTTPException( status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"{file.filename} exceeds the 10 MB limit."
             )
 
@@ -65,11 +66,12 @@ async def upload_documents( files: list[UploadFile] = File(...)):
 
         else:
             raise HTTPException(
-                status_code=400,
+                status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"{file.filename} is not a supported file type."
             )
 
     return {
+        "owner_id": current_user_id,
         "number_of_files": len(results),
         "documents": results
     }
