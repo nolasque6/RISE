@@ -74,4 +74,4 @@ async def upload_documents( files: list[UploadFile] = File(...), current_user_id
         "owner_id": current_user_id,
         "number_of_files": len(results),
         "documents": results
-    }
+    } 
