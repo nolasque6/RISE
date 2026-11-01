@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.schemas.calendar import EventCreate, EventResponse
+from backend.app.schemas.calendar import EventCreate, EventResponse
 
 router = APIRouter(prefix="/calendar", tags=["Calendar"])
 

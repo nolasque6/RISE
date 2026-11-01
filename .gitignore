@@ -362,3 +362,10 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+.env
+student_ai.db
+*.db
+venv/
+.venv/
+__pycache__/

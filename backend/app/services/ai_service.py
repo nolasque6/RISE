@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-client = genai.Client()
+load_dotenv()
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 
 async def analyze_scanned_document(

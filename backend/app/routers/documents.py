@@ -1,7 +1,7 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException, status, Depends
-from app.services.pdf_service import extract_text_from_pdf
-from app.services.ai_service import analyze_scanned_document
-from app.services.authentication_service import get_current_user
+from backend.app.services.pdf_service import extract_text_from_pdf
+from backend.app.services.ai_service import analyze_scanned_document
+from backend.app.services.authentication_service import get_current_user
 
 router = APIRouter(prefix="/documents", tags=["Documents"])
 

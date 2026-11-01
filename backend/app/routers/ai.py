@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.schemas.ai import PromptRequest, SummaryResponse
+from backend.app.schemas.ai import PromptRequest, SummaryResponse
 
 router = APIRouter(prefix="/ai", tags=["AI"])
 
